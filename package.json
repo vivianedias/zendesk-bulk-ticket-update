@@ -1,7 +1,7 @@
 {
   "name": "zendesk-bulk-ticket-update",
-  "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "version": "0.1.0",
+  "description": "Update many Zendesk tickets with desired variables",
   "engines": {
     "node": ">= 12.13 <13"
   },
@@ -33,8 +33,8 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
-  "license": "Apache-2.0",
+  "author": "Viviane Dias <vivianedias@protonmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@types/node-zendesk": "^1.4.0",
     "@types/yup": "^0.28.0",

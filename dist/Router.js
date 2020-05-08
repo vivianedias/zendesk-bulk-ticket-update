@@ -28,13 +28,32 @@ const getTicketsIdFromRequest = ({ tickets }) => __awaiter(void 0, void 0, void 
     yield schema.validate(tickets);
     return tickets;
 });
+exports.contentSchema = yup.object().shape({
+    ticket: yup.object().shape({
+        comment: yup.object().shape({
+            body: yup.string().required(),
+            author_id: yup.number().required(),
+            public: yup.boolean().required(),
+        }),
+        fields: yup.array().of(yup.object().shape({
+            id: yup.number().required(),
+            value: yup.string().required(),
+        })),
+        status: yup.string(),
+    }),
+});
+const getTicketContentFromRequest = ({ content, }) => __awaiter(void 0, void 0, void 0, function* () {
+    yield exports.contentSchema.validate(content);
+    return content;
+});
 const Router = () => express_1.default()
     .use(express_1.default.json())
     .post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tickets = yield getTicketsIdFromRequest(req.body);
-        signale_1.default.watch(`Incoming request with ${tickets.length} ticket id's`);
-        return App_1.default(tickets, res);
+        const tickets_ids = yield getTicketsIdFromRequest(req.body);
+        const content = yield getTicketContentFromRequest(req.body);
+        signale_1.default.watch(`Incoming request with ${tickets_ids.length} ticket`);
+        return App_1.default(tickets_ids, content, res);
     }
     catch (e) {
         signale_1.default.fatal(e);
