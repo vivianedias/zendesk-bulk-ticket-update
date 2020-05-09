@@ -6,21 +6,23 @@ const updateTickets = async (
   ticket: any,
   fn: Function,
 ) => {
-  return tickets_ids.forEach(id => {
-    return Client.tickets.update(
-      id,
-      ticket,
-      async (error, _req, result: any) => {
-        if (error) {
-          log.fatal(error);
-          return fn(false);
-        }
+  return tickets_ids.map((id, i: number) => {
+    setTimeout(() => {
+      return Client.tickets.update(
+        id,
+        ticket,
+        async (error, _req, result: any) => {
+          if (error) {
+            log.fatal(`Ticket with id ${result.id} gave this error: ${error}`);
+            return fn(false);
+          }
 
-        log.success(`Ticket with id ${result.id} was updated`);
-
-        return fn(result);
-      },
-    );
+          log.success(`Ticket with id ${result.id} was updated`);
+          if (tickets_ids.length === i + 1) log.success('Finished batch');
+          return fn(result.id, tickets_ids.length === i + 1);
+        },
+      );
+    }, i * 2500);
   });
 };
 

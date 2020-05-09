@@ -14,9 +14,12 @@ const App = async (
   content: ContentTypes,
   res: Response,
 ) => {
-  const ticketsCallback = (t: any) => {
+  let arr: Array<number> = new Array();
+
+  const ticketsCallback = (t: any, done: boolean) => {
     if (!t) return res.status(500).json('Ticket update failed');
-    return res.json(t);
+    arr.push(t);
+    if (done) res.json(arr);
   };
 
   // getTickets(tickets_id, ticketsCallback);
